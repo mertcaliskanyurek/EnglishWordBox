@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class WordModel(
     @PrimaryKey(autoGenerate = true) val _id: Long = 0,
     val word: String,
-    val translateTR: String,
-    val level: WordLevel,
-    val isInBox: Boolean = true,
+    val level: String,
+    var knowCount: Int = 0,
+    var useless: Boolean = false
 )

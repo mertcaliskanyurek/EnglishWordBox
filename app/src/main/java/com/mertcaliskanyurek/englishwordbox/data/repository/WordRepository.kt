@@ -16,9 +16,18 @@ class WordRepository @Inject constructor(
     private val db: WordDAO
 ):IWordRepository {
 
-    override fun getWordsByLevel(level: WordLevel): LiveData<List<WordModel>> = db.getWordsByLevel(level)
+    companion object {
+        val WORD_COUNT = 248
+    }
+
+    override fun getWord(level: WordLevel): Flow<WordModel> = db.getWordByLevel(level)
 
     override suspend fun insertAll(wordList: List<WordModel>) = db.insertAll(wordList)
 
     override suspend fun updateWord(word: WordModel) = db.updateWord(word)
+
+    override fun getProgress(level: WordLevel): Int {
+        val learned: Int = db.getLearnedWordCount(level)
+        return (learned * 100) / WORD_COUNT
+    }
 }

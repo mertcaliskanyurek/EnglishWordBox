@@ -1,11 +1,12 @@
 package com.mertcaliskanyurek.englishwordbox.ui.viewmodel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.mertcaliskanyurek.englishwordbox.data.model.WordLevel
 import com.mertcaliskanyurek.englishwordbox.data.model.WordModel
-import com.mertcaliskanyurek.englishwordbox.data.repository.IWordRepository
 import com.mertcaliskanyurek.englishwordbox.data.repository.WordRepository
+
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -14,9 +15,52 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val wordRepository: WordRepository
+    private val wordRepository: WordRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    fun getWordsByLevel(level: WordLevel): LiveData<List<WordModel>> =
-        wordRepository.getWordsByLevel(level)
+    var currentWord: MutableLiveData<WordModel> = MutableLiveData()
+
+    var currentProgress: MutableLiveData<Int> = MutableLiveData()
+    var openTranslation: MutableLiveData<Boolean> = MutableLiveData()
+
+    var wordPicked: MutableLiveData<Boolean> = MutableLiveData()
+
+    init {
+        viewModelScope.launch {
+             wordRepository.getWord(WordLevel.A1).collect {
+             currentWord.value = it
+            }
+        }
+
+        currentProgress.value = wordRepository.getProgress(WordLevel.A1)
+        openTranslation.value = false
+    }
+
+    suspend fun addWords(wordList: List<WordModel>) = wordRepository.insertAll(wordList)
+
+    fun pickWord(level: WordLevel) {
+        viewModelScope.launch {
+            wordRepository.getWord(WordLevel.A1).collect {
+                currentWord.value = it
+            }
+        }
+        wordPicked.value = true
+        openTranslation.value = false
+        currentProgress.value = wordRepository.getProgress(level)
+    }
+
+    fun answerSubmitted(answer: String) {
+        openTranslation.value = true
+    }
+
+    suspend fun wordKnown(word: WordModel) {
+        word.knowCount = word.knowCount + 1
+        wordRepository.updateWord(word)
+    }
+
+    suspend fun uselessWord(word: WordModel) {
+        word.useless = true
+        wordRepository.updateWord(word)
+    }
 }

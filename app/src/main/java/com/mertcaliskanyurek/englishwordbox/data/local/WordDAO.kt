@@ -12,12 +12,15 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WordDAO {
 
-    @Query("SELECT * FROM words WHERE level=:wordLevel")
-    fun getWordsByLevel(wordLevel: WordLevel): LiveData<List<WordModel>>
+    @Query("SELECT * FROM words WHERE level=:wordLevel AND useless = 0 AND knowCount < 3 ORDER BY RANDOM() LIMIT 1")
+    fun getWordByLevel(wordLevel: WordLevel): Flow<WordModel>
 
     @Insert
     suspend fun insertAll(wordList: List<WordModel>)
 
     @Update
     suspend fun updateWord(word:WordModel)
+
+    @Query("SELECT count(_id) FROM words WHERE level=:wordLevel AND (useless = 1 OR knowCount > 2)")
+    fun getLearnedWordCount(wordLevel: WordLevel): Int
 }
