@@ -15,8 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val wordRepository: WordRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val wordRepository: WordRepository
 ) : ViewModel() {
 
     var currentWord: MutableLiveData<WordModel> = MutableLiveData()
@@ -31,10 +30,11 @@ class MainViewModel @Inject constructor(
              wordRepository.getWord(WordLevel.A1).collect {
              currentWord.value = it
             }
+
+            currentProgress.value = wordRepository.getProgress(WordLevel.A1)
+            openTranslation.value = false
         }
 
-        currentProgress.value = wordRepository.getProgress(WordLevel.A1)
-        openTranslation.value = false
     }
 
     suspend fun addWords(wordList: List<WordModel>) = wordRepository.insertAll(wordList)
@@ -43,11 +43,12 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             wordRepository.getWord(WordLevel.A1).collect {
                 currentWord.value = it
+
             }
+            wordPicked.value = true
+            openTranslation.value = false
+            currentProgress.value = wordRepository.getProgress(level)
         }
-        wordPicked.value = true
-        openTranslation.value = false
-        currentProgress.value = wordRepository.getProgress(level)
     }
 
     fun answerSubmitted(answer: String) {

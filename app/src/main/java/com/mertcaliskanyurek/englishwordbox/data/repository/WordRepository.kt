@@ -4,7 +4,12 @@ import androidx.lifecycle.LiveData
 import com.mertcaliskanyurek.englishwordbox.data.local.WordDAO
 import com.mertcaliskanyurek.englishwordbox.data.model.WordLevel
 import com.mertcaliskanyurek.englishwordbox.data.model.WordModel
+import com.mertcaliskanyurek.englishwordbox.data.network.TranslationResponse
+import com.mertcaliskanyurek.englishwordbox.data.network.TurengApi
+import com.mertcaliskanyurek.englishwordbox.util.AppInfo
+import com.mertcaliskanyurek.englishwordbox.util.Resource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 
@@ -13,7 +18,8 @@ import javax.inject.Inject
  */
 
 class WordRepository @Inject constructor(
-    private val db: WordDAO
+    private val db: WordDAO,
+    private val api: TurengApi
 ):IWordRepository {
 
     companion object {
@@ -29,5 +35,29 @@ class WordRepository @Inject constructor(
     override fun getProgress(level: WordLevel): Int {
         val learned: Int = db.getLearnedWordCount(level)
         return (learned * 100) / WORD_COUNT
+    }
+
+    override fun translateWord(word: String, language: String): Flow<Resource<TranslationResponse>> = flow{
+        try {
+            emit(Resource.Loading<TranslationResponse>())
+
+            val response = api.translate(language, AppInfo.INPUT_LANG,word, AppInfo.API_KEY)
+            if(response.isSuccessful) {
+                response.body()?.let {
+                    emit(Resource.Success<TranslationResponse>(it))
+                }
+            }
+            else {
+                response.errorBody()?.let {
+                    emit(Resource.Error<TranslationResponse>(it.toString()))
+                } ?: run {
+                    emit(Resource.Error<TranslationResponse>(AppInfo.GENERAL_ERROR))
+                }
+            }
+
+        }
+        catch (e: Exception) {
+            emit(Resource.Error<TranslationResponse>(e.localizedMessage?.toString()))
+        }
     }
 }

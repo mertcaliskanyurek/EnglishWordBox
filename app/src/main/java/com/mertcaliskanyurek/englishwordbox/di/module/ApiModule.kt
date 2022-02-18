@@ -1,5 +1,7 @@
 package com.mertcaliskanyurek.englishwordbox.di.module
 
+import com.mertcaliskanyurek.englishwordbox.data.network.TurengApi
+import com.mertcaliskanyurek.englishwordbox.util.AppInfo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,5 +23,5 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun createApi(retrofit: Retrofit): InsectramApi = retrofit.create(InsectramApi::class.java)
+    fun createApi(retrofit: Retrofit): TurengApi = retrofit.create(TurengApi::class.java)
 }
