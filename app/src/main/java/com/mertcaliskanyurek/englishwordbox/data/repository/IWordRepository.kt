@@ -12,7 +12,6 @@ interface IWordRepository {
     fun getWord(level: WordLevel) : Flow<WordModel>
     suspend fun insertAll(wordList: List<WordModel>)
     suspend fun updateWord(word: WordModel)
-    fun getProgress(level: WordLevel): Int
-
-    fun translateWord(word: String, language: String): Flow<Resource<TranslationResponse>>
+    fun deleteAll()
+    fun searchWord(text: String) : Flow<List<WordModel>>
 }

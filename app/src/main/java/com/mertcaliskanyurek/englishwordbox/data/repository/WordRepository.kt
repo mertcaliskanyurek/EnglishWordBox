@@ -22,22 +22,15 @@ class WordRepository @Inject constructor(
     private val api: TurengApi
 ):IWordRepository {
 
-    companion object {
-        val WORD_COUNT = 248
-    }
-
     override fun getWord(level: WordLevel): Flow<WordModel> = db.getWordByLevel(level)
 
     override suspend fun insertAll(wordList: List<WordModel>) = db.insertAll(wordList)
 
     override suspend fun updateWord(word: WordModel) = db.updateWord(word)
 
-    override fun getProgress(level: WordLevel): Int {
-        val learned: Int = db.getLearnedWordCount(level)
-        return (learned * 100) / WORD_COUNT
-    }
+    override fun searchWord(text: String): Flow<List<WordModel>> = db.searchWord(text)
 
-    override fun translateWord(word: String, language: String): Flow<Resource<TranslationResponse>> = flow{
+    /*override fun translateWord(word: String, language: String): Flow<Resource<TranslationResponse>> = flow{
         try {
             emit(Resource.Loading<TranslationResponse>())
 
@@ -59,5 +52,7 @@ class WordRepository @Inject constructor(
         catch (e: Exception) {
             emit(Resource.Error<TranslationResponse>(e.localizedMessage?.toString()))
         }
-    }
+    }*/
+
+    override fun deleteAll() = db.nukeTable()
 }

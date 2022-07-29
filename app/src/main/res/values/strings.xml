@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">English WordBox</string>
+    <string name="word_search_hint">Bir kelime yazın</string>
+    <string name="choose_mother_tongue">Ana Dilinizi Seçiniz</string>
+    <string name="next">İLERİ</string>
+    <string name="please_wait">Kelimeler hazırlanıyor. Lütfen bekleyiniz.</string>
 </resources>

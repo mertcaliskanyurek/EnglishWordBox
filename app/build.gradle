@@ -69,8 +69,11 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
 
+    //material
+    implementation "com.google.android.material:material:$material_version"
 
     implementation "androidx.multidex:multidex:$multidex_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0"
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'

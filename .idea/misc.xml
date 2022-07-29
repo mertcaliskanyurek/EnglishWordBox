@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/AndroidStudioProjects/EnglishWordBox/app/src/main/res/drawable/ic_baseline_photo_camera_24.xml" value="0.2415" />
+        <entry key="..\:/Projects/AndroidStudioProjects/EnglishWordBox/app/src/main/res/drawable/ic_de.xml" value="0.1395" />
+        <entry key="..\:/Projects/AndroidStudioProjects/EnglishWordBox/app/src/main/res/drawable/ic_es.xml" value="0.1395" />
+        <entry key="..\:/Projects/AndroidStudioProjects/EnglishWordBox/app/src/main/res/drawable/ic_fr.xml" value="0.1395" />
+        <entry key="..\:/Projects/AndroidStudioProjects/EnglishWordBox/app/src/main/res/drawable/ic_tr.xml" value="0.1395" />
+        <entry key="..\:/Projects/AndroidStudioProjects/EnglishWordBox/app/src/main/res/layout/activity_first_start.xml" value="0.264" />
+        <entry key="..\:/Projects/AndroidStudioProjects/EnglishWordBox/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/mert_/Projects/AndroidStudioProjects/EnglishWordBox/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
       </map>
     </option>

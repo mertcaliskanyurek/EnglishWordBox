@@ -1,6 +1,5 @@
 package com.mertcaliskanyurek.englishwordbox.data.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -12,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WordDAO {
 
-    @Query("SELECT * FROM words WHERE level=:wordLevel AND useless = 0 AND knowCount < 3 ORDER BY RANDOM() LIMIT 1")
+    @Query("SELECT * FROM words WHERE level=:wordLevel AND trash = 0 ORDER BY RANDOM() LIMIT 1")
     fun getWordByLevel(wordLevel: WordLevel): Flow<WordModel>
 
     @Insert
@@ -21,6 +20,9 @@ interface WordDAO {
     @Update
     suspend fun updateWord(word:WordModel)
 
-    @Query("SELECT count(_id) FROM words WHERE level=:wordLevel AND (useless = 1 OR knowCount > 2)")
-    fun getLearnedWordCount(wordLevel: WordLevel): Int
+    @Query("DELETE FROM words")
+    fun nukeTable()
+
+    @Query("SELECT * FROM words WHERE word LIKE '%' || :text || '%'")
+    fun searchWord(text: String) : Flow<List<WordModel>>
 }
