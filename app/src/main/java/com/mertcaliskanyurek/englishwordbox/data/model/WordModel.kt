@@ -9,7 +9,5 @@ data class WordModel(
     val word: String,
     val means: String,
     val sound: String,
-    var level: String = "A1",
-    var box: Boolean = false,
-    var trash: Boolean = false
+    var state: WordState = WordState.NOTHING,
 )

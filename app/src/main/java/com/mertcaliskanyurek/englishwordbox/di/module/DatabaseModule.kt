@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.mertcaliskanyurek.englishwordbox.data.local.AppDatabase
 import com.mertcaliskanyurek.englishwordbox.data.local.WordDAO
+import com.mertcaliskanyurek.englishwordbox.data.repository.WordRepository
+import com.mertcaliskanyurek.englishwordbox.data.repository.WordRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,4 +31,8 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun wordDAO(db: AppDatabase): WordDAO = db.wordDAO()
+
+    @Provides
+    @Singleton
+    fun wordRepository(db: AppDatabase): WordRepository = WordRepositoryImpl(db.wordDAO())
 }

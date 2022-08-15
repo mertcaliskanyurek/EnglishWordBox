@@ -8,8 +8,10 @@ import com.mertcaliskanyurek.englishwordbox.data.model.WordModel
 
 object GsonUtil {
 
-    private fun AssetManager.readAssetsFile(fileName : String): String = open(fileName).bufferedReader().use{it.readText()}
+    private fun AssetManager.readAssetsFile(fileName : String): String = open(fileName)
+        .bufferedReader().use{it.readText()}
 
-    fun getWords(context: Context,fileName: String): List<WordModel> = Gson().fromJson(context.assets.readAssetsFile(fileName), object :
-        TypeToken<List<WordModel>>(){}.type)
+    fun getWords(context: Context,fileName: String): List<WordModel> = Gson()
+        .fromJson(context.assets.readAssetsFile(fileName), object :
+            TypeToken<List<WordModel>>(){}.type)
 }

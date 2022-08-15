@@ -2,6 +2,7 @@ package com.mertcaliskanyurek.englishwordbox.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.mertcaliskanyurek.englishwordbox.data.model.WordModel
 
 
@@ -12,6 +13,7 @@ import com.mertcaliskanyurek.englishwordbox.data.model.WordModel
 @Database(entities = [
                 WordModel::class
                      ], version = 1, exportSchema = false)
+@TypeConverters(WordConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun wordDAO(): WordDAO
 }

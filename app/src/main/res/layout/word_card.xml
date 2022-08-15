@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="com.mertcaliskanyurek.englishwordbox.data.model.WordState" />
+        <variable
+            name="word"
+            type="com.mertcaliskanyurek.englishwordbox.data.model.WordModel" />
+
+    </data>
+<com.google.android.material.card.MaterialCardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:visibility="@{word == null ? View.GONE : View.VISIBLE}"
+    app:strokeWidth="0dp"
+    app:strokeColor="#95a1a3"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/closeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_close"
+            android:layout_margin="8dp"
+            android:scaleType="fitEnd"
+            />
+
+        <!-- Media -->
+        <ImageView
+            android:id="@+id/iwPicture"
+            android:layout_width="match_parent"
+            android:layout_height="194dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_spinning_circles"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Title, secondary and supporting text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{word.word}"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@{word.means}"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/ic_baseline_report"/>
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/soundAnimation"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_margin="8dp"
+                    android:visibility="@{word.sound.length() > 1 ?View.VISIBLE : View.GONE}"
+                    android:layout_weight="1"
+                    android:scaleType="fitEnd"
+                    app:lottie_repeatMode="reverse"
+                    app:lottie_repeatCount="2"
+                    app:lottie_rawRes="@raw/sound"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:id="@+id/optionsView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/trashButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{word.state == WordState.IN_TRASH ? View.INVISIBLE : View.VISIBLE}"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="ÇÖP"
+                style="?attr/borderlessButtonStyle" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/boxButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{word.state == WordState.IN_BOX ? View.INVISIBLE : View.VISIBLE}"
+                android:layout_weight="1"
+                android:text="SAKLA"
+                style="?attr/borderlessButtonStyle" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
+</layout>
