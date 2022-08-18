@@ -8,6 +8,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     
-    <color name="blue">#757EAC</color>
-    <color name="yellow">#FFFC00</color>
+    <color name="primary">#454FBC</color>
+    <color name="primary_variant">#5345BC</color>
+    <color name="primary_variant2">#6B45BC</color>
+
+    <color name="secondary">#457FBC</color>
+    <color name="secondary_variant">#4567BC</color>
+    <color name="secondary_variant2">#5561E6</color>
+
+    <color name="red">#BC454F</color>
+    <color name="red_variant">#BC458A</color>
+    <color name="green">#4FBC45</color>
 </resources>

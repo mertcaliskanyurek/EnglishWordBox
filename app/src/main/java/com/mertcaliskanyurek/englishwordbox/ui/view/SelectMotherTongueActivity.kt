@@ -25,7 +25,7 @@ class SelectMotherTongueActivity : AppCompatActivity() {
 
             if(it >= 1.0) {
                 AppSettings.setFirstTime(this,false)
-                finish()
+                startActivity(Intent(this,MainActivity::class.java))
             }
         }
     }

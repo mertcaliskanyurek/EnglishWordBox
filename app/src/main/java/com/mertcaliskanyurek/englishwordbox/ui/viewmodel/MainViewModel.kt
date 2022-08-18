@@ -73,14 +73,14 @@ class MainViewModel @Inject constructor(
 
     fun onTrash() = selectedWord.value?.let {
             viewModelScope.launch(Dispatchers.IO) {
-                wordRepository.updateState(it._id,WordState.IN_BOX)
+                wordRepository.updateState(it._id,WordState.IN_TRASH)
             }
         }
 
 
     fun onBox() = selectedWord.value?.let {
             viewModelScope.launch(Dispatchers.IO) {
-                wordRepository.updateState(it._id, WordState.IN_TRASH)
+                wordRepository.updateState(it._id, WordState.IN_BOX)
             }
     }
 }

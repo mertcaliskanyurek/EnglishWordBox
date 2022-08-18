@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">English WordBox</string>
     <string name="word_search_hint">Bir kelime yazın</string>
-    <string name="choose_mother_tongue">Ana Dilinizi Seçiniz\nWählen Sie Ihre Muttersprache\nElige tu idioma nativo\nChoisissez votre langue maternelle</string>
+    <string name="choose_mother_tongue">Ana Dilinizi Seçiniz\n\nWählen Sie Ihre Muttersprache\n\nElige tu idioma nativo\n\nChoisissez votre langue maternelle</string>
     <string name="please_wait">Sözlük indiriliyor. Lütfen bekleyiniz.</string>
+
     <string name="title_activity_settings">SettingsActivity</string>
 
     <!-- Preference Titles -->

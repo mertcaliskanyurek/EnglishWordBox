@@ -102,24 +102,46 @@
             android:layout_margin="8dp"
             android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
+            <ImageView
+                android:id="@+id/trashButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_outline_delete_forever_24"/>
+
+            <ImageView
+                android:id="@+id/boxButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_outline_inbox_24"/>
+
+            <!--<com.google.android.material.button.MaterialButton
                 android:id="@+id/trashButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:icon="@drawable/ic_remove_circle_24"
                 android:visibility="@{word.state == WordState.IN_TRASH ? View.INVISIBLE : View.VISIBLE}"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:text="ÇÖP"
+                android:text="Çöp Kutusuna"
+                android:textColor="@color/red"
+                android:textSize="12sp"
+                app:iconTint="@color/red"
                 style="?attr/borderlessButtonStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/boxButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:icon="@drawable/ic_baseline_add_circle_24"
                 android:visibility="@{word.state == WordState.IN_BOX ? View.INVISIBLE : View.VISIBLE}"
                 android:layout_weight="1"
-                android:text="SAKLA"
-                style="?attr/borderlessButtonStyle" />
+                android:text="Hafıza Kutusuna"
+                android:textSize="12sp"
+                style="?attr/borderlessButtonStyle" /> -->
         </LinearLayout>
 
     </LinearLayout>
