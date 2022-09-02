@@ -1,38 +1,47 @@
 <PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        app:title="@string/messages_header">
+        app:title="@string/reminder_header">
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true"/>
+        <SeekBarPreference
+            app:key="reminder"
+            app:title="@string/reminder_title"
+            app:summary="@string/time_period"
+            app:showSeekBarValue="true"
+            app:useSimpleSummaryProvider="true"
+            app:min="1"
+            android:max="12"
+            app:defaultValue="3"/>
 
-        <ListPreference
+        <!--<ListPreference
             app:key="reply"
             app:title="@string/reply_title"
             app:entries="@array/reply_entries"
             app:entryValues="@array/reply_values"
             app:defaultValue="reply"
-            app:useSimpleSummaryProvider="true"/>
+            app:useSimpleSummaryProvider="true"/> -->
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        app:title="@string/sync_header">
+    <!--<PreferenceCategory
+        app:title="@string/search_header">
 
         <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title"/>
+            app:key="search_with_mic"
+            app:title="@string/search_mic_title"
+            app:summaryOn="@string/search_mic_on_summary"
+            app:summaryOff="@string/search_mic_off_summary"
+            app:defaultValue="true"/>
 
         <SwitchPreferenceCompat
             app:key="attachment"
-            app:title="@string/attachment_title"
-            app:summaryOn="@string/attachment_summary_on"
-            app:summaryOff="@string/attachment_summary_off"
-            app:dependency="sync"/>
+            app:title="@string/search_camera_title"
+            app:summaryOn="@string/search_camera_on_summary"
+            app:summaryOff="@string/search_camera_off_summary"
+            app:defaultValue="true"/>
 
-    </PreferenceCategory>
+    </PreferenceCategory>-->
 
 </PreferenceScreen>

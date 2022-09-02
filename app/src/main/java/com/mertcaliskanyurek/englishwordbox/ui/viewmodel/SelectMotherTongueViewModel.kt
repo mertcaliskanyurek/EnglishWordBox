@@ -39,15 +39,15 @@ class SelectMotherTongueViewModel @Inject constructor(
                 val wordsResp = wordBoxApi.words(translate,letter.toString(),AppConstants.API_KEY)
                 if (wordsResp.isSuccessful) {
                     wordRepository.insertAll(wordsResp.body()!!)
-                    progress.postValue(progress.value?.plus(0.25f) ?: 1.0f)
+                    progress.postValue(progress.value?.plus(0.25f))
                 }
                 else {
                     error.postValue(wordsResp.message())
                     return@forEach
                 }
             }
-            //wordRepository.insertAll(wordList)
-            AppSettings.setFirstTime(application.applicationContext,false)
+
+            progress.postValue(1.0f)
         }
     }
 

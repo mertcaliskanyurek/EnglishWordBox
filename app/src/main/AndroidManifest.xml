@@ -14,7 +14,7 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.view.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity

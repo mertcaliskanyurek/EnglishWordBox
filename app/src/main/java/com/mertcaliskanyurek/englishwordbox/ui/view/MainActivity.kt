@@ -81,6 +81,10 @@ class MainActivity : AppCompatActivity() {
         binding.trashAnimation.setOnClickListener {
             startWordListActivity(WordState.IN_TRASH)
         }
+
+        binding.settingsButton.setOnClickListener {
+            startActivity(Intent(this,SettingsActivity::class.java))
+        }
     }
 
     private fun startWordListActivity(state: WordState) {
@@ -88,6 +92,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(WordListActivity.EXTRA_WORDS_STATE_TO_BE_LISTED,state.name)
         startActivity(intent)
     }
+
 
     private fun hideKeyboard() = this.currentFocus?.let { view ->
         val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager

@@ -4,20 +4,23 @@
     <string name="choose_mother_tongue">Ana Dilinizi Seçiniz\n\nWählen Sie Ihre Muttersprache\n\nElige tu idioma nativo\n\nChoisissez votre langue maternelle</string>
     <string name="please_wait">Sözlük indiriliyor. Lütfen bekleyiniz.</string>
 
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Ayarlar</string>
 
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <string name="reminder_header">Hatırlatıcı</string>
+    <string name="search_header">Arama</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
+    <!-- Reminder Preferences -->
+    <string name="reminder_title">Hatırlatıcının periyodunu ayarlayın</string>
+    <string name="time_period">Günde %1$d kelime</string>
 
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <!-- Search Preferences -->
+    <string name="search_mic_title">Mikrofon ile kelime arama</string>
+    <string name="search_mic_on_summary">Kelimeyi telefonunuza söyleyerek aratın</string>
+    <string name="search_mic_off_summary">Konuşarak kelime arama kapalı</string>
+    <string name="search_camera_title">Kamera ile kelime arama</string>
+    <string name="search_camera_on_summary">Yazıların resmini çekerek üstündeki bir kelimeyi seçin ve aratın</string>
+    <string name="search_camera_off_summary">Resim çekerek kelime arama kapalı</string>
+    <string name="about">Kelimeler <a href="https://tureng.com">Tureng</a> ile çevrilmiştir.\nGeliştirici <a href="https://mertcaliskanyurek.github.io/">Mert Çalışkanyürek</a></string>
+    <string name="change_language">Dili Değiştir</string>
 </resources>
