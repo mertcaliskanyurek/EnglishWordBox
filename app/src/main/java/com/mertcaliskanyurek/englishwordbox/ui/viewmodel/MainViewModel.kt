@@ -58,7 +58,9 @@ class MainViewModel @Inject constructor(
 
     fun onItemClick(word: WordModel) {
         selectedWord.postValue(word)
-        soundPlayer.prepare(word.sound)
+        word.sound?.let {
+            soundPlayer.prepare(it)
+        }
         viewModelScope.launch(Dispatchers.IO) {
             val res = wordBoxApi.picture(word.word,AppConstants.API_KEY)
             if(res.isSuccessful) pictureUrl.postValue(res.body())

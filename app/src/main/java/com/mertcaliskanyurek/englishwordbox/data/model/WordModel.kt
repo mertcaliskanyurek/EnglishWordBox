@@ -8,6 +8,6 @@ data class WordModel(
     @PrimaryKey(autoGenerate = true) val _id: Long = 0,
     val word: String,
     val means: String,
-    val sound: String,
+    val sound: String?,
     var state: WordState = WordState.NOTHING,
 )

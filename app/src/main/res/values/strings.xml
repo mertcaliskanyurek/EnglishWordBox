@@ -23,4 +23,6 @@
     <string name="search_camera_off_summary">Resim çekerek kelime arama kapalı</string>
     <string name="about">Kelimeler <a href="https://tureng.com">Tureng</a> ile çevrilmiştir.\nGeliştirici <a href="https://mertcaliskanyurek.github.io/">Mert Çalışkanyürek</a></string>
     <string name="change_language">Dili Değiştir</string>
+    <string name="notification_channel_name">English Word Box Notification</string>
+    <string name="notification_title">Bu kelimeyi hatırlıyor musun?</string>
 </resources>

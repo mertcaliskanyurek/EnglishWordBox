@@ -4,7 +4,6 @@ import com.mertcaliskanyurek.englishwordbox.data.local.WordDAO
 import com.mertcaliskanyurek.englishwordbox.data.model.WordModel
 import com.mertcaliskanyurek.englishwordbox.data.model.WordState
 import kotlinx.coroutines.flow.Flow
-import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -31,4 +30,6 @@ class WordRepositoryImpl @Inject constructor(
     override suspend fun updateState(id: Long, state: WordState) = db.setState(id,state)
 
     override fun deleteAll() = db.nukeTable()
+
+    override fun getRandomFromBox(): Flow<WordModel?> = db.getRandom(WordState.IN_BOX)
 }

@@ -39,4 +39,10 @@ interface WordRepository {
      * Deletes all words from table
      */
     fun deleteAll()
+
+
+    /**
+     * @return random word from saved in box
+     */
+    fun getRandomFromBox(): Flow<WordModel?>
 }

@@ -35,5 +35,7 @@ interface WordDAO {
     @Query("DELETE FROM words")
     fun nukeTable()
 
+    @Query("SELECT * from words WHERE state = :state ORDER BY RANDOM() LIMIT 1")
+    fun getRandom(state: WordState): Flow<WordModel?>
 
 }
