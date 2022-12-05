@@ -16,4 +16,8 @@ interface WordBoxApi {
         @Query("api_key") apiKey: String
     ): Response<List<WordModel>>
 
+    @GET("report.php")
+    suspend fun report(
+        @Query("word") word: String, @Query("reason") reason: String, @Query("api_key") apiKey: String
+    ): Response<String>
 }

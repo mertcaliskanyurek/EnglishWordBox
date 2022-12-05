@@ -25,4 +25,13 @@
     <string name="change_language">Dili Değiştir</string>
     <string name="notification_channel_name">English Word Box Notification</string>
     <string name="notification_title">Bu kelimeyi hatırlıyor musun?</string>
+    <string name="report_title">Raporlama sebebini seçin</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="report_success">Rapor gönderildi. Geri bildiriminiz için teşekkür ederiz.</string>
+
+    <string-array name="report_reasons">
+        <item>Hatalı Çeviri</item>
+        <item>Hatalı Kelime</item>
+        <item>Uygunsuz fotoğraf</item>
+    </string-array>
 </resources>

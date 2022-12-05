@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NavUtils
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -58,7 +57,6 @@ class WordListActivity : AppCompatActivity() {
 
             override fun onItemClick(word: WordModel, position: Int) {
                 binding.wordCard.setWord(word)
-                binding.wordCard.setOptionsVisible(false)
                 viewModel.prepareWordImage(word.word)
             }
 

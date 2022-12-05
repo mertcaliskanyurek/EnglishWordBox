@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.mertcaliskanyurek.englishwordbox.R
 import com.mertcaliskanyurek.englishwordbox.data.model.WordModel
+import com.mertcaliskanyurek.englishwordbox.data.model.WordState
 import com.mertcaliskanyurek.englishwordbox.databinding.WordCardBinding
 
 class WordCard @JvmOverloads constructor(
@@ -22,10 +23,6 @@ class WordCard @JvmOverloads constructor(
         LayoutInflater.from(context),
         R.layout.word_card,this,true)
 
-    val trashButton = binding.trashButton
-    val boxButton = binding.boxButton
-    val soundButton = binding.soundAnimation
-
     init {
         binding.word = null
         binding.iwPicture.visibility = View.GONE
@@ -36,6 +33,7 @@ class WordCard @JvmOverloads constructor(
 
     fun setWord(word: WordModel) {
         binding.word = word
+        initOptionButtons(word)
         showWithAnim()
     }
 
@@ -43,6 +41,15 @@ class WordCard @JvmOverloads constructor(
         Glide.with(context).load(imageUrl).into(binding.iwPicture)
         binding.iwPicture.visibility = View.VISIBLE
     }
+
+    /*fun setOptionsVisible(isVisible: Boolean) {
+        binding.optionsView.visibility = if (isVisible) View.VISIBLE else View.GONE
+    }*/
+
+    fun setOnTrashButtonClick(listener: OnClickListener) = binding.trashButton.setOnClickListener(listener)
+    fun setOnBoxButtonClick(listener: OnClickListener) = binding.boxButton.setOnClickListener(listener)
+    fun setOnReportButtonClick(listener: OnClickListener) = binding.reportButton.setOnClickListener(listener)
+    fun setOnSoundButtonClick(listener: OnClickListener) = binding.soundAnimation.setOnClickListener(listener)
 
     private fun showWithAnim() {
         //reset animation
@@ -54,8 +61,12 @@ class WordCard @JvmOverloads constructor(
         startAnimation(AnimationUtils.loadAnimation(context,R.anim.bounce))
     }
 
-    fun setOptionsVisible(isVisible: Boolean){
-        binding.optionsView.visibility = if (isVisible) View.VISIBLE else View.GONE
+    private fun initOptionButtons(word: WordModel){
+        when(word.state) {
+            WordState.IN_BOX -> binding.boxButton.visibility = View.GONE
+            WordState.IN_TRASH -> binding.boxButton.visibility = View.GONE
+            WordState.NOTHING -> {}
+        }
     }
 
     fun hideWithAnim(toBox: Boolean) = animate()

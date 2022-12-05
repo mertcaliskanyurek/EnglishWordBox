@@ -73,6 +73,12 @@ class MainViewModel @Inject constructor(
         soundPlayer.playSound()
     }
 
+    fun onReportClick(reason: String) = selectedWord.value?.let {
+        viewModelScope.launch(Dispatchers.IO) {
+            wordBoxApi.report(word = it.word, reason,AppConstants.API_KEY)
+        }
+    }
+
     fun onTrash() = selectedWord.value?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 wordRepository.updateState(it._id,WordState.IN_TRASH)

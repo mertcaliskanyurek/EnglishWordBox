@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -76,21 +77,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.wordCard.setOptionsVisible(true)
-
-        binding.wordCard.trashButton.setOnClickListener() {
+        binding.wordCard.setOnTrashButtonClick {
             viewModel.onTrash()
-            binding.trashAnimation.playAnimation()
             binding.wordCard.hideWithAnim(false)
+            binding.trashAnimation.playAnimation()
         }
 
-        binding.wordCard.boxButton.setOnClickListener() {
+        binding.wordCard.setOnBoxButtonClick {
             viewModel.onBox()
-            binding.boxAnimation.playAnimation()
             binding.wordCard.hideWithAnim(true)
+            binding.boxAnimation.playAnimation()
         }
 
-        binding.wordCard.soundButton.setOnClickListener(viewModel::onSoundClick)
+        binding.wordCard.setOnReportButtonClick {
+            showReportDialog {
+                viewModel.onReportClick(it)
+            }
+        }
+
+        binding.wordCard.setOnSoundButtonClick(viewModel::onSoundClick)
 
         binding.boxAnimation.setOnClickListener {
             startWordListActivity(WordState.IN_BOX)
@@ -106,6 +111,21 @@ class MainActivity : AppCompatActivity() {
         intent.getStringExtra(EXTRA_WORD)?.let {
             viewModel.onSearch(it,0,0,it.length)
         }
+    }
+
+    private fun showReportDialog(onChoiceListener: (String)->Unit) {
+        val dialog = AlertDialog.Builder(this)
+        val reasons = resources.getStringArray(R.array.report_reasons)
+        dialog.setTitle(R.string.report_title)
+        dialog.setSingleChoiceItems(reasons,-1) {
+                dialog, which -> onChoiceListener(reasons[which]).also {
+            dialog.dismiss().also {
+                Toast.makeText(baseContext,R.string.report_success,Toast.LENGTH_SHORT).show() } }
+        }
+        dialog.setNegativeButton(R.string.common_cancel){
+                dialog, which -> dialog.dismiss()
+        }
+        dialog.show()
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
