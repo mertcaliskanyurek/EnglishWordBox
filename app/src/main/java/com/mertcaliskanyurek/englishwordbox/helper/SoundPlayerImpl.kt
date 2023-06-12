@@ -1,15 +1,11 @@
 package com.mertcaliskanyurek.englishwordbox.helper
 
-import android.R
-import android.content.Context
 import android.media.MediaPlayer
-import android.net.Uri
 import android.util.Log
-import androidx.core.content.PackageManagerCompat.LOG_TAG
 import java.io.IOException
 
 
-class SoundPlayerImpl(private val context: Context) : SoundPlayer {
+class SoundPlayerImpl : SoundPlayer {
     private val TAG = SoundPlayerImpl::class.java.name
 
     private val mediaPlayer = MediaPlayer()
@@ -18,7 +14,7 @@ class SoundPlayerImpl(private val context: Context) : SoundPlayer {
     override fun prepare(url: String) {
         try {
             mediaPlayer.reset()
-            mediaPlayer.setDataSource(context,Uri.parse(url))
+            mediaPlayer.setDataSource(url)
             mediaPlayer.setOnPreparedListener {
                 prepared = true
             }

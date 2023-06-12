@@ -26,6 +26,9 @@ interface WordDAO {
     @Query("SELECT * FROM words WHERE state == :state")
     fun getWords(state: WordState): Flow<List<WordModel>>
 
+    @Query("SELECT * FROM words WHERE word == :word LIMIT 1")
+    fun getWord(word: String): Flow<WordModel?>
+
     @Query("UPDATE words SET state = :state WHERE _id = :id")
     suspend fun setState(id: Long, state: WordState)
 

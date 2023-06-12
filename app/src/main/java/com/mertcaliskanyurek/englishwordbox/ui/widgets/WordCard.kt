@@ -23,11 +23,19 @@ class WordCard @JvmOverloads constructor(
         LayoutInflater.from(context),
         R.layout.word_card,this,true)
 
+    var onDismiss: (()->Unit)? = null
+
+    var cardOpened = false
+        private set
+
     init {
         binding.word = null
         binding.iwPicture.visibility = View.GONE
         binding.closeButton.setOnClickListener(){
             binding.word = null
+            binding.iwPicture.visibility = View.GONE
+            onDismiss?.invoke()
+            cardOpened = false
         }
     }
 
@@ -37,9 +45,13 @@ class WordCard @JvmOverloads constructor(
         showWithAnim()
     }
 
-    fun setImage(imageUrl: String) {
-        Glide.with(context).load(imageUrl).into(binding.iwPicture)
-        binding.iwPicture.visibility = View.VISIBLE
+    fun setImage(imageUrl: String?) {
+        imageUrl?.let {
+            Glide.with(context).load(it).into(binding.iwPicture).clearOnDetach()
+            binding.iwPicture.visibility = View.VISIBLE
+        }?:run {
+            binding.iwPicture.visibility = View.GONE
+        }
     }
 
     /*fun setOptionsVisible(isVisible: Boolean) {
@@ -52,6 +64,7 @@ class WordCard @JvmOverloads constructor(
     fun setOnSoundButtonClick(listener: OnClickListener) = binding.soundAnimation.setOnClickListener(listener)
 
     private fun showWithAnim() {
+        cardOpened = true
         //reset animation
         translationY = 0f
         translationX = 0f
@@ -70,13 +83,14 @@ class WordCard @JvmOverloads constructor(
     }
 
     fun hideWithAnim(toBox: Boolean) = animate()
-        .scaleX(0.1f).scaleY(0.1f)
-        .alpha(0.1f)
-        .translationY(height.toFloat())
-        .translationX(if(toBox) width.toFloat() else -width.toFloat())
-        .setDuration(300)
-        .withEndAction {
-            binding.word = null
-        }.start()
+            .scaleX(0.1f).scaleY(0.1f)
+            .alpha(0.1f)
+            .translationY(height.toFloat())
+            .translationX(if (toBox) width.toFloat() else -width.toFloat())
+            .setDuration(300)
+            .withEndAction {
+                close()
+            }.start()
 
+    fun close() =  binding.closeButton.performClick()
 }

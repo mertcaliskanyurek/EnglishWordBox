@@ -26,6 +26,7 @@ class WordRepositoryImpl @Inject constructor(
     override fun searchWord(text: String): Flow<List<WordModel>> = db.searchWord(text)
 
     override fun getWords(state: WordState): Flow<List<WordModel>> = db.getWords(state)
+    override fun getWord(word: String): Flow<WordModel?> = db.getWord(word)
 
     override suspend fun updateState(id: Long, state: WordState) = db.setState(id,state)
 

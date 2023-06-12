@@ -27,6 +27,8 @@ class MainViewModel @Inject constructor(
     private val wordBoxApi: WordBoxApi
 ) : ViewModel() {
 
+    private var lastSearchedWord = ""
+
     val searchResults: MutableLiveData<List<WordModel>> by lazy {
         MutableLiveData()
     }
@@ -35,12 +37,13 @@ class MainViewModel @Inject constructor(
         MutableLiveData()
     }
 
-    val pictureUrl: MutableLiveData<String> by lazy {
-        MutableLiveData("")
+    val pictureUrl: MutableLiveData<String?> by lazy {
+        MutableLiveData(null)
     }
 
-    //var onBox: () -> Unit = {}
-    //var onTrash: () -> Unit = {}
+    val error: MutableLiveData<AppConstants.ErrorType?> by lazy {
+        MutableLiveData(null)
+    }
 
     fun onSearch(
         s: CharSequence,
@@ -50,8 +53,11 @@ class MainViewModel @Inject constructor(
         )  {
         viewModelScope.launch(Dispatchers.IO)
         {
-            wordRepository.searchWord(s.toString()).collect {
-                searchResults.postValue(it)
+            if(s.length == 1 && s != lastSearchedWord) {
+                lastSearchedWord = s.toString()
+                wordRepository.searchWord(s.toString()).collect {
+                    searchResults.postValue(it)
+                }
             }
         }
     }
@@ -59,11 +65,30 @@ class MainViewModel @Inject constructor(
     fun onItemClick(word: WordModel) {
         selectedWord.postValue(word)
         word.sound?.let {
-            soundPlayer.prepare(it)
+            if(it != "null") soundPlayer.prepare(it)
         }
         viewModelScope.launch(Dispatchers.IO) {
             val res = wordBoxApi.picture(word.word,AppConstants.API_KEY)
             if(res.isSuccessful) pictureUrl.postValue(res.body())
+            else pictureUrl.postValue(null)
+        }
+    }
+
+    fun getWord(wordText: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            wordRepository.getWord(wordText).collect { wordModel->
+                wordModel?.let { word->
+                    selectedWord.postValue(word)
+                    word.sound?.let {
+                        if (it.isNotEmpty()) soundPlayer.prepare(it)
+                    }
+                    val res = wordBoxApi.picture(word.word,AppConstants.API_KEY)
+                    if(res.isSuccessful) pictureUrl.postValue(res.body())
+                    else pictureUrl.postValue(null)
+                }?:run {
+                    error.postValue(AppConstants.ErrorType.ERROR_WORD_NOT_FOUND)
+                }
+            }
         }
     }
 
@@ -75,7 +100,10 @@ class MainViewModel @Inject constructor(
 
     fun onReportClick(reason: String) = selectedWord.value?.let {
         viewModelScope.launch(Dispatchers.IO) {
-            wordBoxApi.report(word = it.word, reason,AppConstants.API_KEY)
+            wordBoxApi.report(word = it.word, reason,AppConstants.API_KEY).also {
+                if(it.isSuccessful) error.postValue(null)
+                else error.postValue(AppConstants.ErrorType.ERROR_FEEDBACK_NOT_SENT)
+            }
         }
     }
 
@@ -90,5 +118,14 @@ class MainViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 wordRepository.updateState(it._id, WordState.IN_BOX)
             }
+    }
+
+    fun sendUnknownWordReport(word: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            wordBoxApi.report(word,AppConstants.REASON_UNKNOWN_WORD,AppConstants.API_KEY).also {
+                if(it.isSuccessful) error.postValue(null)
+                else error.postValue(AppConstants.ErrorType.ERROR_FEEDBACK_NOT_SENT)
+            }
+        }
     }
 }

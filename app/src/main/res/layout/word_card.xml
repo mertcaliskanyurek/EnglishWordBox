@@ -14,7 +14,6 @@
 <com.google.android.material.card.MaterialCardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
     android:visibility="@{word == null ? View.GONE : View.VISIBLE}"
     app:strokeWidth="0dp"
     app:strokeColor="#95a1a3"
@@ -83,7 +82,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_margin="8dp"
-                    android:visibility="@{word.sound.length() > 1 ?View.VISIBLE : View.GONE}"
+                    android:visibility="@{word.sound.length() > 5 ?View.VISIBLE : View.GONE}"
                     android:layout_weight="1"
                     android:scaleType="fitEnd"
                     app:lottie_repeatMode="reverse"

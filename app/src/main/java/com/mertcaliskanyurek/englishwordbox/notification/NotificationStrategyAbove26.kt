@@ -42,10 +42,10 @@ class NotificationStrategyAboveApi26(
     override fun buildNotification(title: String?, text: String?): Notification {
         val notificationIntent = Intent(context, MainActivity::class.java)
         notificationIntent.putExtra(MainActivity.EXTRA_WORD,text)
-        notificationIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        notificationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent = PendingIntent.getActivity(
             context,
-            0, notificationIntent, PendingIntent.FLAG_IMMUTABLE
+            0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         return NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(context.getString(R.string.notification_title))

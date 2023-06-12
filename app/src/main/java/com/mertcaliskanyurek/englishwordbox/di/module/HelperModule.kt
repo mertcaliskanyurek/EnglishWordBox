@@ -20,7 +20,7 @@ object HelperModule {
 
     @Provides
     @Singleton
-    fun soundPlayer(@ApplicationContext context: Context): SoundPlayer = SoundPlayerImpl(context)
+    fun soundPlayer(): SoundPlayer = SoundPlayerImpl()
 
     @Provides
     fun notificationStrategy(@ApplicationContext context: Context): NotificationStrategy =

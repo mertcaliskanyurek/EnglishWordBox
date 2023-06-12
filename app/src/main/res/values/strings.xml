@@ -1,37 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">English WordBox</string>
-    <string name="word_search_hint">Bir kelime yazın</string>
-    <string name="choose_mother_tongue">Ana Dilinizi Seçiniz\n\nWählen Sie Ihre Muttersprache\n\nElige tu idioma nativo\n\nChoisissez votre langue maternelle</string>
-    <string name="please_wait">Sözlük indiriliyor. Lütfen bekleyiniz.</string>
+    <string name="app_name">English Word Box</string>
+    <string name="word_search_hint">Search a word</string>
+    <string name="choose_mother_tongue">Choose Your Mother Tongue\n\nWählen Sie Ihre Muttersprache\n\nElige tu idioma nativo\n\nChoisissez votre langue maternelle</string>
+    <string name="please_wait">Dictionary is downloading. Please wait.</string>
+    <string name="common_send">Send</string>
 
-    <string name="title_activity_settings">Ayarlar</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_word_box">Word Box</string>
+    <string name="title_activity_trash_box">Trash Box</string>
 
     <!-- Preference Titles -->
-    <string name="reminder_header">Hatırlatıcı</string>
-    <string name="search_header">Arama</string>
+    <string name="reminder_header">Reminder</string>
+    <string name="search_header">Search</string>
 
     <!-- Reminder Preferences -->
-    <string name="reminder_title">Hatırlatıcının periyodunu ayarlayın</string>
-    <string name="time_period">Günde %1$d kelime</string>
+    <string name="reminder_title">Set Reminder Period</string>
+    <string name="time_period">%1$d words per day</string>
 
     <!-- Search Preferences -->
-    <string name="search_mic_title">Mikrofon ile kelime arama</string>
-    <string name="search_mic_on_summary">Kelimeyi telefonunuza söyleyerek aratın</string>
-    <string name="search_mic_off_summary">Konuşarak kelime arama kapalı</string>
-    <string name="search_camera_title">Kamera ile kelime arama</string>
-    <string name="search_camera_on_summary">Yazıların resmini çekerek üstündeki bir kelimeyi seçin ve aratın</string>
-    <string name="search_camera_off_summary">Resim çekerek kelime arama kapalı</string>
-    <string name="about">Kelimeler <a href="https://tureng.com">Tureng</a> ile çevrilmiştir.\nGeliştirici <a href="https://mertcaliskanyurek.github.io/">Mert Çalışkanyürek</a></string>
-    <string name="change_language">Dili Değiştir</string>
-    <string name="notification_channel_name">English Word Box Notification</string>
-    <string name="notification_title">Bu kelimeyi hatırlıyor musun?</string>
-    <string name="report_title">Raporlama sebebini seçin</string>
-    <string name="common_cancel">Cancel</string>
-    <string name="report_success">Rapor gönderildi. Geri bildiriminiz için teşekkür ederiz.</string>
+    <string name="search_mic_title">Search with Microphone</string>
+    <string name="search_mic_on_summary">Search for a word by speaking it into your phone</string>
+    <string name="search_mic_off_summary">Voice search is off</string>
+    <string name="search_camera_title">Search with Camera</string>
+    <string name="search_camera_on_summary">Take a picture of text, select a word on it, and search</string>
+    <string name="search_camera_off_summary">Image search is off</string>
+    <string name="about">Words are translated with <a href="https://tureng.com">Tureng</a>.\nCreated by <a href="http://ormerlabs.com/">Ormerlabs</a></string>
+    <string name="change_language">Change Language</string>
 
+    <!-- Notifications -->
+    <string name="notification_channel_name">English Word Box Notification</string>
+    <string name="notification_title">Do you remember this word?</string>
+    <string name="report_title">Select a reporting reason</string>
+    <string name="common_cancel">Cancel</string>
+
+    <!-- Report -->
+    <string name="report_success">Report is being sent. Thank you for your feedback.</string>
+    <string name="report_failure">Report could not be sent. Please try again later.</string>
+
+    <!-- Errors -->
+    <string name="err_no_data_in_trash">Trash box is empty. Here, the words that you don\'t want to be suggested are listed.</string>
+    <string name="err_no_data_in_box">Word box is empty. The words that will be reminded later are listed here.</string>
+    <string name="word_not_found_title">Word Not Found</string>
+    <string name="word_not_found_message"><b>%1$s</b> word could not be found in our dictionary. You can send it to us for inclusion in the dictionary.</string>
     <string-array name="report_reasons">
-        <item>Hatalı Çeviri</item>
-        <item>Hatalı Kelime</item>
-        <item>Uygunsuz fotoğraf</item>
+        <item>Incorrect Translation</item>
+        <item>Incorrect Word</item>
+        <item>Inappropriate Photo</item>
     </string-array>
 </resources>

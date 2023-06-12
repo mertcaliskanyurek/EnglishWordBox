@@ -27,6 +27,8 @@ interface WordRepository {
      */
     fun getWords(state: WordState): Flow<List<WordModel>>
 
+    fun getWord(word: String): Flow<WordModel?>
+
     /**
      * Updates word state
      *

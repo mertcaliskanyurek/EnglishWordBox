@@ -11,6 +11,7 @@
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.view.MainActivity">
@@ -22,7 +23,6 @@
         android:src="@drawable/ic_baseline_settings_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         android:contentDescription="settings button" />
@@ -34,8 +34,8 @@
         android:hint="@string/word_search_hint"
         app:endIconCheckable="true"
         app:endIconMode="custom"
+        app:endIconDrawable="@drawable/baseline_search_24"
         android:layout_margin="16dp"
-        app:endIconDrawable="@drawable/ic_baseline_photo_camera_24"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +49,9 @@
             android:id="@+id/searchTextField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textAutoComplete"
+            android:imeOptions="actionSearch"
+            android:padding="8dp"
             android:maxLines="1"
             android:onTextChanged="@{viewModel::onSearch}"/>
 
@@ -58,6 +61,7 @@
         android:id="@+id/wordCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +76,6 @@
         app:lottie_speed="0.8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp" />
 
@@ -85,9 +88,18 @@
         app:lottie_speed="0.8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/baseline_arrow_back_24"
+        android:id="@+id/iv_back"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

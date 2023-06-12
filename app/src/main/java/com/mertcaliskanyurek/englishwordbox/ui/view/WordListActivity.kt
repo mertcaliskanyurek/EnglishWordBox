@@ -36,21 +36,28 @@ class WordListActivity : AppCompatActivity() {
         binding.recyclerWordListView.layoutManager = LinearLayoutManager(this)
 
         viewModel.words.observe(this) {
-            initListView(wordStateToBeListed,viewModel,binding,ArrayList(it))
+            initListView(wordStateToBeListed,viewModel,binding,ArrayList(it),wordStateToBeListed)
+        }
+        supportActionBar?.title = if(wordStateToBeListed == WordState.IN_BOX) {
+            getString(R.string.title_activity_word_box)
+        } else {
+            getString(R.string.title_activity_trash_box)
         }
         viewModel.prepareWords(wordStateToBeListed)
     }
 
-    private fun initListView(wordState: WordState,
-                             viewModel: WordListViewModel,
-                             binding: ActivityWordListBinding,
-                             words: ArrayList<WordModel>) {
+    private fun initListView(
+        wordState: WordState,
+        viewModel: WordListViewModel,
+        binding: ActivityWordListBinding,
+        words: ArrayList<WordModel>,
+        wordStateToBeListed: WordState
+    ) {
         val adapter = WordListRecyclerAdapter(words)
 
         viewModel.pictureUrl.observe(this) { picture ->
-            picture?.let {
-                binding.wordCard.setImage(picture)
-            }
+            if(picture.isNullOrEmpty()) return@observe
+            binding.wordCard.setImage(picture)
         }
 
         adapter.itemClickListener = object : WordListRecyclerAdapter.ItemClickListener {
@@ -70,6 +77,17 @@ class WordListActivity : AppCompatActivity() {
                     }.show()
             }
 
+        }
+
+        if(words.size < 1) {
+            if(wordStateToBeListed == WordState.IN_BOX) {
+                binding.tvNoData.text = getString(R.string.err_no_data_in_box)
+            } else {
+                binding.tvNoData.text = getString(R.string.err_no_data_in_trash)
+            }
+            binding.tvNoData.visibility = android.view.View.VISIBLE
+        } else {
+            binding.tvNoData.visibility = android.view.View.GONE
         }
 
         binding.recyclerWordListView.adapter = adapter

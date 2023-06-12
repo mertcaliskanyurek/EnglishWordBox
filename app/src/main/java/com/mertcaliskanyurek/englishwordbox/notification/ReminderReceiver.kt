@@ -26,7 +26,7 @@ class ReminderReceiver : BroadcastReceiver() {
         context?.let {
             ReminderUtil.initNextReminder(it)
         }
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Default).launch {
             wordRepository.getRandomFromBox().collect { word->
                 word?.let {
                     Log.d("NOTI","${it.word} is being notified")

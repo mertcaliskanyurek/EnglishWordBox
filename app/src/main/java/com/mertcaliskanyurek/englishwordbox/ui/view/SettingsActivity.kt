@@ -1,13 +1,10 @@
 package com.mertcaliskanyurek.englishwordbox.ui.view
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -26,7 +23,10 @@ class SettingsActivity : AppCompatActivity() {
                     .replace(R.id.settings, SettingsFragment())
                     .commit()
         }
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = getString(R.string.title_activity_settings)
+        }
         initViews(binding)
     }
 

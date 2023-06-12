@@ -10,5 +10,9 @@ object AppConstants {
     const val TRANSLATION_EN_ES = "en-es"
     const val TRANSLATION_EN_FR = "en-fr"
 
-    const val INPUT_LANG = "en"
+    const val REASON_UNKNOWN_WORD: String = "unknown_word"
+
+    enum class ErrorType{
+        ERROR_WORD_NOT_FOUND, ERROR_FEEDBACK_NOT_SENT
+    }
 }

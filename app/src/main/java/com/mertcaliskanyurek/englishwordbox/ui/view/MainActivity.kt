@@ -3,10 +3,12 @@ package com.mertcaliskanyurek.englishwordbox.ui.view
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
+import android.view.KeyEvent
+import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -16,13 +18,15 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.mertcaliskanyurek.englishwordbox.R
 import com.mertcaliskanyurek.englishwordbox.data.adapter.WordListArrayAdapter
-import com.mertcaliskanyurek.englishwordbox.data.model.WordModel
 import com.mertcaliskanyurek.englishwordbox.data.model.WordState
 import com.mertcaliskanyurek.englishwordbox.databinding.ActivityMainBinding
 import com.mertcaliskanyurek.englishwordbox.ui.viewmodel.MainViewModel
+import com.mertcaliskanyurek.englishwordbox.util.AppConstants
 import com.mertcaliskanyurek.englishwordbox.util.AppSettings
 import com.mertcaliskanyurek.englishwordbox.util.ReminderUtil
+import com.mertcaliskanyurek.englishwordbox.util.hideSoftInput
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 
 @AndroidEntryPoint
@@ -33,14 +37,18 @@ class MainActivity : AppCompatActivity() {
         private const val NOTIFICATION_PERMISSION_CODE = 200
     }
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
-
         if (AppSettings.getFirstTime(this)) {
             startActivity(Intent(this,SelectMotherTongueActivity::class.java))
             return
         }
+        setLocale(AppSettings.getMotherTongue(this))
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestNotificationPermission()
@@ -49,81 +57,144 @@ class MainActivity : AppCompatActivity() {
         }
 
         val viewModel: MainViewModel by viewModels()
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        val adapter: ArrayAdapter<WordModel> = WordListArrayAdapter(this, arrayListOf<WordModel>()) {
-            viewModel.onItemClick(it)
-            binding.searchTextField.clearFocus()
-        }
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.searchTextField.threshold = 1
-        binding.searchTextField.setAdapter(adapter)
 
-        viewModel.searchResults.observe(this) { words ->
-            adapter.clear()
-            adapter.addAll(words)
-            adapter.notifyDataSetChanged()
-        }
+        viewModel.apply {
+            searchResults.observe(this@MainActivity) { words ->
+                val adapter = WordListArrayAdapter(this@MainActivity, words) {
+                    viewModel.onItemClick(it)
+                    binding.searchTextField.clearFocus()
+                    binding.searchTextField.hideSoftInput()
+                }
+                binding.searchTextField.setAdapter(adapter)
+            }
 
-        viewModel.selectedWord.observe(this) { word ->
-            hideKeyboard()
-            binding.wordCard.setWord(word)
-        }
+            selectedWord.observe(this@MainActivity) { word ->
+                binding.filledTextField.visibility = View.GONE
+                binding.wordCard.setWord(word)
+            }
 
-        viewModel.pictureUrl.observe(this) { picture ->
-            picture?.let {
-                binding.wordCard.setImage(it)
+            pictureUrl.observe(this@MainActivity) { picture ->
+                binding.wordCard.setImage(picture)
+            }
+
+            error.observe(this@MainActivity) { error->
+                error?.let { err->
+                    when(err) {
+                        AppConstants.ErrorType.ERROR_WORD_NOT_FOUND -> {
+                            val word = binding.searchTextField.text.toString()
+                            showWordNotFoundDialog(word) {
+                                viewModel.sendUnknownWordReport(word)
+                            }
+                        }
+                        AppConstants.ErrorType.ERROR_FEEDBACK_NOT_SENT -> {
+                            Toast.makeText(this@MainActivity, R.string.report_failure, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             }
         }
 
-        binding.wordCard.setOnTrashButtonClick {
-            viewModel.onTrash()
-            binding.wordCard.hideWithAnim(false)
-            binding.trashAnimation.playAnimation()
-        }
+        binding.apply {
+            wordCard.apply {
+                setOnTrashButtonClick {
+                    viewModel.onTrash()
+                    wordCard.hideWithAnim(false)
+                    trashAnimation.playAnimation()
+                }
 
-        binding.wordCard.setOnBoxButtonClick {
-            viewModel.onBox()
-            binding.wordCard.hideWithAnim(true)
-            binding.boxAnimation.playAnimation()
-        }
+                setOnBoxButtonClick {
+                    viewModel.onBox()
+                    wordCard.hideWithAnim(true)
+                    boxAnimation.playAnimation()
+                }
 
-        binding.wordCard.setOnReportButtonClick {
-            showReportDialog {
-                viewModel.onReportClick(it)
+                setOnReportButtonClick {
+                    showReportDialog {
+                        viewModel.onReportClick(it)
+                    }
+                }
+
+                setOnSoundButtonClick(viewModel::onSoundClick)
+                onDismiss = { filledTextField.visibility = View.VISIBLE }
             }
+
+            mainLayout.setOnTouchListener { v, _ ->
+                searchTextField.clearFocus()
+                v.hideSoftInput()
+                false
+            }
+
+            filledTextField.setEndIconOnClickListener {
+                it.clearFocus()
+                it.hideSoftInput()
+                viewModel.getWord(binding.searchTextField.text.toString().lowercase())
+            }
+
+            searchTextField.setOnEditorActionListener { v, actionId, event ->
+                if ((event != null && (event.keyCode == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_SEARCH)) {
+                    viewModel.getWord(v.text.toString())
+                    v.clearFocus()
+                    v.hideSoftInput()
+                    true
+                } else false
+            }
+
+            ivBack.setOnClickListener {
+                onBackPressed()
+            }
+
+            boxAnimation.setOnClickListener {
+                startWordListActivity(WordState.IN_BOX)
+            }
+
+            trashAnimation.setOnClickListener {
+                startWordListActivity(WordState.IN_TRASH)
+            }
+
+            settingsButton.setOnClickListener {
+                startActivity(Intent(this@MainActivity,SettingsActivity::class.java))
+            }
+
         }
 
-        binding.wordCard.setOnSoundButtonClick(viewModel::onSoundClick)
-
-        binding.boxAnimation.setOnClickListener {
-            startWordListActivity(WordState.IN_BOX)
-        }
-
-        binding.trashAnimation.setOnClickListener {
-            startWordListActivity(WordState.IN_TRASH)
-        }
-
-        binding.settingsButton.setOnClickListener {
-            startActivity(Intent(this,SettingsActivity::class.java))
-        }
         intent.getStringExtra(EXTRA_WORD)?.let {
-            viewModel.onSearch(it,0,0,it.length)
+            viewModel.getWord(it)
         }
+
     }
 
     private fun showReportDialog(onChoiceListener: (String)->Unit) {
         val dialog = AlertDialog.Builder(this)
         val reasons = resources.getStringArray(R.array.report_reasons)
         dialog.setTitle(R.string.report_title)
-        dialog.setSingleChoiceItems(reasons,-1) {
-                dialog, which -> onChoiceListener(reasons[which]).also {
-            dialog.dismiss().also {
-                Toast.makeText(baseContext,R.string.report_success,Toast.LENGTH_SHORT).show() } }
+        dialog.setIcon(R.drawable.ic_baseline_report)
+        dialog.setSingleChoiceItems(reasons,-1) { dialog, which ->
+            onChoiceListener(reasons[which])
+            dialog.dismiss()
+            Toast.makeText(baseContext,R.string.report_success,Toast.LENGTH_SHORT).show()
         }
         dialog.setNegativeButton(R.string.common_cancel){
                 dialog, which -> dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun showWordNotFoundDialog(word: String, onSendClick: () -> Unit) {
+        val dialog = AlertDialog.Builder(this)
+        dialog.setCancelable(true)
+        dialog.setIcon(R.drawable.baseline_question_mark_24)
+        dialog.setTitle(R.string.word_not_found_title)
+        dialog.setMessage(getString(R.string.word_not_found_message, word))
+        dialog.setPositiveButton(R.string.common_send) { dialog, _ ->
+            onSendClick()
+            dialog.dismiss()
+        }
+        dialog.setNegativeButton(R.string.common_cancel) { dialog, _ ->
+            dialog.dismiss()
         }
         dialog.show()
     }
@@ -154,7 +225,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == NOTIFICATION_PERMISSION_CODE) {
 
             // If permission is granted
-            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Displaying a toast
                 ReminderUtil.initNextReminder(this)
             } else {
@@ -171,10 +242,22 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    override fun onBackPressed() {
+        if (binding.wordCard.cardOpened) {
+            binding.wordCard.close()
+        } else {
+            super.onBackPressed()
+        }
+    }
 
-    private fun hideKeyboard() = this.currentFocus?.let { view ->
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
-        imm?.hideSoftInputFromWindow(view.windowToken, 0)
+    private fun setLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val resources = resources
+        val config: Configuration = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
+        AppSettings.setMotherTongue(this, languageCode)
     }
 
 }
